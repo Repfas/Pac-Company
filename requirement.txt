@@ -1,0 +1,6 @@
+pyspark
+python-dotenv==1.2.1
+dagster
+clickhouse-connect
+requests
+dagster-webserver
