@@ -19,7 +19,13 @@ This project implements an **end-to-end batch data pipeline** using:
 
 Follow the steps below to get the pipeline up and running:
 
-### 1. Clone the Repository
+### 1. Create temp folder 
+mkdir Pac-company-dagster/src/Pac_company_dagster/pipeline/temp/data_raw
+mkdir Pac-company-dagster/src/Pac_company_dagster/pipeline/temp/data_cleaned
+mkdir Pac-company-dagster/src/Pac_company_dagster/pipeline/temp/fct_dim/product
+mkdir Pac-company-dagster/src/Pac_company_dagster/pipeline/temp/fct_dim/sales
+
+###2. Clone the Repository
 
 git clone https://github.com/Repfas/Pac-Company  
 cd Pac-company-dagster  
@@ -27,14 +33,14 @@ python -m venv venv
 source venv/bin/activate  
 cd Pac-company-dagster
 
-### 2. Run Source Database (PostgreSQL via Docker)
+### 3. Run Source Database (PostgreSQL via Docker)
 
 docker run -d \
   -p 5434:5432 \
   --name pac-company \
   shandytp/amazon-sales-data-docker-db:latest
 
-### 3. Run ClickHouse (Analytical Warehouse)
+### 4. Run ClickHouse (Analytical Warehouse)
 
 docker run -d \
   -p 8123:8123 \
@@ -50,7 +56,9 @@ Validate the mount:
 
 docker exec -it clickhouse-server ls /var/lib/clickhouse/user_files
 
-### 4. Create Databases and Tables (DDL)
+
+
+###5. Create Databases and Tables (DDL)
 
 docker exec -it clickhouse-server clickhouse-client
 
@@ -60,26 +68,26 @@ SHOW DATABASES;
 SHOW TABLES FROM product_dwh;  
 SHOW TABLES FROM sales_dwh;
 
-### 5. Install Requirements
+### 6. Install Requirements
 
 pip install -r requirements.txt  
 pip install -e .
 
-### 6. Configure Environment Variables
+### 7. Configure Environment Variables
 
 Edit the `.env` file with your local configuration and paths.
 
-### 7. Start Dagster UI
+### 8. Start Dagster UI
 
 DAGSTER_GRPC_TIMEOUT_SECONDS=600 dagster dev
 
 Then open: http://localhost:3000
 
-### 8. Run the Pipeline
+### 9. Run the Pipeline
 
 In the Dagster UI, materialize assets in order: Extract → Transform → Load
 
-### 9. Validate Loaded Data
+### 10. Validate Loaded Data
 
 docker exec -it clickhouse-server clickhouse-client
 
