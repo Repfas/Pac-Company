@@ -1,30 +1,41 @@
-Data Engineering Pipeline
-Dagster · PySpark · ClickHouse
+# Data Engineering Pipeline
 
-Overview
-This project implements a batch data engineering pipeline for learning and practice. It demonstrates an end-to-end ETL workflow using:
+A complete batch ETL pipeline built for learning and hands-on practice in modern data engineering workflows.
 
-Dagster for orchestration
+---
 
-PySpark for data transformation
+## Overview
 
-Parquet as intermediate storage
+This project implements an **end-to-end batch data pipeline** using:
 
-ClickHouse as the analytical data warehouse
+- Dagster – for orchestration  
+- PySpark – for scalable data transformation  
+- Parquet – as intermediate data storage  
+- ClickHouse – as the analytical data warehouse
 
-How to Run
-1. Clone the repository
- 
-git clone <REPO_URL>
+---
+
+## How to Run
+
+Follow the steps below to get the pipeline up and running:
+
+### 1. Clone the Repository
+
+git clone https://github.com/Repfas/Pac-Company  
+cd Pac-Company  
+python -m venv venv  
+source venv/bin/activate  
 cd Pac-company-dagster
-2. Run source database (PostgreSQL)
- 
+
+### 2. Run Source Database (PostgreSQL via Docker)
+
 docker run -d \
   -p 5434:5432 \
   --name pac-company \
   shandytp/amazon-sales-data-docker-db:latest
-3. Run ClickHouse (Data Warehouse)
- 
+
+### 3. Run ClickHouse (Analytical Warehouse)
+
 docker run -d \
   -p 8123:8123 \
   -p 9000:9000 \
@@ -34,82 +45,87 @@ docker run -d \
   --name clickhouse-server \
   --ulimit nofile=262144:262144 \
   clickhouse/clickhouse-server
-Validate mount:
 
- 
+Validate the mount:
+
 docker exec -it clickhouse-server ls /var/lib/clickhouse/user_files
-4. Create databases and tables (DDL)
-All schemas are defined in helper SQL files.
 
- 
-cat product/helper_product.sql | docker exec -i clickhouse-server clickhouse-client
-cat sales/helper_sales.sql     | docker exec -i clickhouse-server clickhouse-client
-Verify:
+### 4. Create Databases and Tables (DDL)
 
- 
 docker exec -it clickhouse-server clickhouse-client
-Then in the ClickHouse client:
 
+Then inside the ClickHouse client:
 
-SHOW DATABASES;
-SHOW TABLES FROM product_dwh;
+SHOW DATABASES;  
+SHOW TABLES FROM product_dwh;  
 SHOW TABLES FROM sales_dwh;
-5. Set up Python environment
- 
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-6. Configure environment variables
-Create a .env file in the project root:
 
+### 5. Install Requirements
 
-CH_HOST=localhost
-CH_PORT=8123
-CH_USER=user
-CH_PASSWORD=password123
-DIR_TEMP_DATA_FCT_DIM=/mnt/c/Users/UsEr/Documents/Belajar_Data_Engineer/final_project_wrangling_mod/Pac-company-dagster/src/Pac_company_dagster/pipeline/temp
-7. Start Dagster
- 
+pip install -r requirements.txt  
+pip install -e .
+
+### 6. Configure Environment Variables
+
+Edit the `.env` file with your local configuration and paths.
+
+### 7. Start Dagster UI
+
 DAGSTER_GRPC_TIMEOUT_SECONDS=600 dagster dev
-Open: http://localhost:3000
 
-8. Run the pipeline
-In Dagster UI, materialize assets from Extract → Transform → Load.
+Then open: http://localhost:3000
 
-9. Validate loaded data
- 
+### 8. Run the Pipeline
+
+In the Dagster UI, materialize assets in order: Extract → Transform → Load
+
+### 9. Validate Loaded Data
+
 docker exec -it clickhouse-server clickhouse-client
-Then in the ClickHouse client:
 
+Then run:
 
-SELECT count(*) FROM product_dwh.dim_product;
-SELECT count(*) FROM product_dwh.dim_date;
+SELECT count(*) FROM product_dwh.dim_product;  
+SELECT count(*) FROM product_dwh.dim_date;  
 SELECT count(*) FROM product_dwh.fct_product_price;
 
+---
 
-Tech Stack
-Python
+## Tech Stack
 
-Dagster
+- Python  
+- Dagster  
+- PySpark  
+- Pandas  
+- Parquet (PyArrow)  
+- ClickHouse  
+- Docker  
 
-PySpark
+---
 
-Pandas
+## Notes
 
-Parquet (PyArrow)
+- PySpark is used only in the Transform stage  
+- Parquet is used as intermediate storage  
+- ClickHouse loads are idempotent (TRUNCATE + INSERT)  
+- Helper SQL files must be executed before running the pipeline
 
-ClickHouse
+---
 
-Docker
+## Project Status
 
-Notes
-PySpark is used only in the Transform stage
-
-Parquet is used as intermediate storage
-
-ClickHouse loads are idempotent (TRUNCATE + INSERT)
-
-Helper SQL files must be executed before running the pipeline
-
-Status
 The ETL pipeline is now running end-to-end.
+
+---
+
+## Contributing
+
+Feel free to fork the project and submit a pull request.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
