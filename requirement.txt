@@ -1,6 +1,6 @@
 
 python-dotenv==1.2.1
-dagster dagster-webserverdagster-dg-cli 1.12.10
+dagster dagster-webserver dagster-dg-cli 1.12.10
 clickhouse-connect
 requests
 
@@ -8,3 +8,4 @@ pandas
 pyspark[sql]
 
 psycopg2-binary
+
