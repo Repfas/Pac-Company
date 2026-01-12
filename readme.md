@@ -22,7 +22,7 @@ Follow the steps below to get the pipeline up and running:
 ### 1. Clone the Repository
 
 git clone https://github.com/Repfas/Pac-Company  
-cd Pac-Company  
+cd Pac-company-dagster  
 python -m venv venv  
 source venv/bin/activate  
 cd Pac-company-dagster
