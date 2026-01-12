@@ -1,6 +1,10 @@
-pyspark
+
 python-dotenv==1.2.1
-dagster
+dagster dagster-webserverdagster-dg-cli 1.12.10
 clickhouse-connect
 requests
-dagster-webserver
+
+pandas 
+pyspark[sql]
+
+psycopg2-binary
