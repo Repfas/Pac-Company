@@ -28,7 +28,7 @@ mkdir Pac-company-dagster/src/Pac_company_dagster/pipeline/temp/fct_dim/sales
 ###2. Clone the Repository
 
 git clone https://github.com/Repfas/Pac-Company  
-cd Pac-company-dagster  
+
 python -m venv venv  
 source venv/bin/activate  
 cd Pac-company-dagster
@@ -71,6 +71,7 @@ SHOW TABLES FROM sales_dwh;
 ### 6. Install Requirements
 
 pip install -r requirements.txt  
+cd Pac-company-dagster  
 pip install -e .
 
 ### 7. Configure Environment Variables
